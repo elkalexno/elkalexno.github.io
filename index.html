@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="P Galante" />
+
+
+<title>Single Species Vignette</title>
+
+<script src="site_libs/header-attrs-2.29/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Single Species Metrics</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Inicio</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Single Species Vignette</h1>
+<h4 class="author">P Galante</h4>
+
+</div>
+
+
+<div id="single-species-range-change-metrics" class="section level2">
+<h2>Single species range change metrics</h2>
+<p>Translating a species’ current distribution into meaningful
+conservation metrics in a repeatable and transparent way to inform
+conservation planning and decision-making remains an outstanding issue
+in conservation biology. By using a species distribution model (SDM), as
+well as landscape requirements (e.g., forest cover), we can mask the
+output of an SDM to only those areas likely to be suitable to estimate
+the species’ current range (e.g., in
+<a href="https://wallaceEcoMod.github.io/maskRangeR/" target="_blank">maskRangeR</a>.
+From these reduced model outputs, upper bounds of IUCN metrics regarding
+area of occupancy (AOO) and extent of occurrence (EOO) can be calculated
+to inform the assessment of a species’ conservation status, in
+combination with other information [1]. In addition, we can calculate
+the proportion of a species’ range size that is protected, that is
+threatened, or that is associated with different land cover types. If
+past or future model projections or geospatial data on habitat for
+masking are available, we can also calculate and visualize change in
+these metrics over time. These change metrics can then inform IUCN
+red-listing and forward-thinking conservation planning. We provide an
+example below to calculate these metrics for the olinguito [2] using the
+changeRangeR package. Beyond single species, we can combine models from
+multiple species to calculate community-level metrics of conservation
+interest to learn more about this see our multi-species vignettes (see
+Biodiversity metrics vignette).</p>
+<p>[1] IUCN Standards and Petitions Committee. 2022. Guidelines for
+Using the IUCN Red List Categories and Criteria. Version 15.1. Prepared
+by the Standards and Petitions Committee. Available from: <a
+href="https://www.iucnredlist.org/resources/redlistguidelines"
+class="uri">https://www.iucnredlist.org/resources/redlistguidelines</a></p>
+<p>[2] Helgen, K.M., Miguel Pinto, C., Kays, R., Helgen, L.E., Tsuchiya,
+M. T. N., Quinn, A., Wilson, D.E., Maldonado, J.E. (2013) Taxonomic
+revision of the olingos (Bassaricyon), with description of a new
+species, the Olinguito. Zookeys, 324, 1-83. <a
+href="https://doi.org/10.3897/zookeys.324.5827"
+class="uri">https://doi.org/10.3897/zookeys.324.5827</a>.</p>
+<p>[2] Galante, P. J., Chang Triguero, S., Paz, A., Aiello‐Lammens, M.,
+Gerstner, B. E., Johnson, B. A., … &amp; Blair, M. E. (2023).
+changeRangeR: An R package for reproducible biodiversity change metrics
+from species distribution estimates. Conservation Science and Practice,
+5(1), e12863. <a
+href="https://conbio.onlinelibrary.wiley.com/doi/full/10.1111/csp2.12863"
+class="uri">https://conbio.onlinelibrary.wiley.com/doi/full/10.1111/csp2.12863</a></p>
+</div>
+<div id="download-and-install-the-package" class="section level1">
+<h1>Download and install the package</h1>
+<ol style="list-style-type: decimal">
+<li>Download the current version of the changeRangeR package
+(changeRangeR_1.1.0.tar.gz 2024-01-09 10:30 2.0M). from: <a
+href="https://cran.r-project.org/src/contrib/Archive/changeRangeR/"
+class="uri">https://cran.r-project.org/src/contrib/Archive/changeRangeR/</a></li>
+<li>Then, install the package using the “Install” option in RStudio.
+Prefer install from: Package Archive File (.zip;.tar.gz)</li>
+</ol>
+<p>Load the packages you’ll need</p>
+<pre class="r"><code>library(changeRangeR)
+library(raster)
+library(sf)
+library(dplyr)</code></pre>
+</div>
+<div id="range-size" class="section level1">
+<h1>Range size</h1>
+<p>Calculating range size is as simple as multiplying the number of
+cells in a binary raster by the resolution (in km) squared. This method
+is useful when your raster is projected. For unprojected rasters, see
+?raster::area</p>
+<pre class="r"><code>p &lt;- raster(paste0(system.file(package=&quot;changeRangeR&quot;), &quot;/extdata/DemoData/SDM/Forest_suitable_projected_coarse.tif&quot;))
+# Check that your raster is projected in meters
+crs(p)</code></pre>
+<pre><code>## Coordinate Reference System:
+## Deprecated Proj.4 representation:
+##  +proj=utm +zone=18 +south +datum=WGS84 +units=m +no_defs 
+## WKT2 2019 representation:
+## PROJCRS[&quot;unknown&quot;,
+##     BASEGEOGCRS[&quot;unknown&quot;,
+##         DATUM[&quot;World Geodetic System 1984&quot;,
+##             ELLIPSOID[&quot;WGS 84&quot;,6378137,298.257223563,
+##                 LENGTHUNIT[&quot;metre&quot;,1]],
+##             ID[&quot;EPSG&quot;,6326]],
+##         PRIMEM[&quot;Greenwich&quot;,0,
+##             ANGLEUNIT[&quot;degree&quot;,0.0174532925199433],
+##             ID[&quot;EPSG&quot;,8901]]],
+##     CONVERSION[&quot;UTM zone 18S&quot;,
+##         METHOD[&quot;Transverse Mercator&quot;,
+##             ID[&quot;EPSG&quot;,9807]],
+##         PARAMETER[&quot;Latitude of natural origin&quot;,0,
+##             ANGLEUNIT[&quot;degree&quot;,0.0174532925199433],
+##             ID[&quot;EPSG&quot;,8801]],
+##         PARAMETER[&quot;Longitude of natural origin&quot;,-75,
+##             ANGLEUNIT[&quot;degree&quot;,0.0174532925199433],
+##             ID[&quot;EPSG&quot;,8802]],
+##         PARAMETER[&quot;Scale factor at natural origin&quot;,0.9996,
+##             SCALEUNIT[&quot;unity&quot;,1],
+##             ID[&quot;EPSG&quot;,8805]],
+##         PARAMETER[&quot;False easting&quot;,500000,
+##             LENGTHUNIT[&quot;metre&quot;,1],
+##             ID[&quot;EPSG&quot;,8806]],
+##         PARAMETER[&quot;False northing&quot;,10000000,
+##             LENGTHUNIT[&quot;metre&quot;,1],
+##             ID[&quot;EPSG&quot;,8807]],
+##         ID[&quot;EPSG&quot;,16118]],
+##     CS[Cartesian,2],
+##         AXIS[&quot;(E)&quot;,east,
+##             ORDER[1],
+##             LENGTHUNIT[&quot;metre&quot;,1,
+##                 ID[&quot;EPSG&quot;,9001]]],
+##         AXIS[&quot;(N)&quot;,north,
+##             ORDER[2],
+##             LENGTHUNIT[&quot;metre&quot;,1,
+##                 ID[&quot;EPSG&quot;,9001]]]]</code></pre>
+<pre class="r"><code># find the number of cells that are not NA
+pCells &lt;- ncell(p[!is.na(p)])
+# Convert the raster resolution to km^s
+Resolution &lt;- (res(p)/1000)^2
+# Multiply the two
+area &lt;- pCells * Resolution
+
+paste0(&quot;area = &quot;, area[1], &quot; km^2&quot;)</code></pre>
+<pre><code>## [1] &quot;area = 93545.7956265521 km^2&quot;</code></pre>
+</div>
+<div id="eoo" class="section level1">
+<h1>EOO</h1>
+<div id="eoo-occurrences" class="section level2">
+<h2>EOO Occurrences</h2>
+<p>IUCN’s EOO is defined as the area contained within the shortest
+imaginary (continuous) boundary drawn to encompass all the known
+(current) occurrences of a taxon, excluding vagrant localities. This
+measure may exclude discontinuities or disjunctions within the overall
+distribution of a taxon (e.g., large areas of unsuitable habitat, but
+see AOO below). The EOO is typically measured by drawing a minimum
+convex polygon (MCP, also called a convex hull) around occurrence
+localities, but this may include many large areas of obviously
+unsuitable or unoccupied habitat, making a convex hull around a
+thresholded SDM more appropriate. It is important to follow the
+guidelines of the relevant IUCN SSC SG when contributing EOO or AOO
+measurements to enable consistency across assessments. You can read more
+about IUCN definitions <a
+href="https://www.iucnredlist.org/resources/categories-and-criteria">here</a>.
+In changeRangeR, users can calculate IUCN’s EOO via two options 1)
+MCP/convex hull around occurrence localities, 2) MCP/convex hull area of
+thresholded (MTP) SDM.</p>
+<p>Calculate the extent of occupancy around occurrence localities</p>
+<pre class="r"><code>locs &lt;- read.csv(paste0(system.file(package=&quot;changeRangeR&quot;), &quot;/extdata/DemoData/locs/10KM_thin_2017.csv&quot;))
+# Look at the first 5 rows. Not that there are three columns: Species, Longitude, Latitude
+head(locs)</code></pre>
+<pre><code>##       long     lat             species  X X.1
+## 1 -76.5815  3.5009 Bassaricyon neblina NA   1
+## 2 -75.4988  6.2083 Bassaricyon neblina NA   3
+## 3 -78.7491 -0.4550 Bassaricyon neblina NA   4
+## 4 -76.1152  6.3753 Bassaricyon neblina NA   7
+## 5 -76.4453  1.9270 Bassaricyon neblina NA   8
+## 6 -76.8830  2.5330 Bassaricyon neblina NA  10</code></pre>
+<pre class="r"><code># Create a minimum convex polygon around the occurrences
+eoo &lt;- mcp(locs[,1:2])</code></pre>
+<pre><code>## WARNING: this minimum convex polygon has no coordinate reference system.</code></pre>
+<pre class="r"><code># Define the coordinate reference system as unprojected
+crs(eoo) &lt;- &quot;+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs&quot;
+area &lt;- area(eoo)/1000000
+## area is measured in meters^2
+paste0(area, &quot; km ^2&quot;)</code></pre>
+<pre><code>## [1] &quot;91721.7270949235 km ^2&quot;</code></pre>
+</div>
+<div id="eoo-sdm" class="section level2">
+<h2>EOO SDM</h2>
+<p>Calculate the extent of occupancy from a thresholded SDM</p>
+<pre class="r"><code>p &lt;- raster(paste0(system.file(package=&quot;changeRangeR&quot;), &quot;/extdata/DemoData/SDM/Climatically_suitable_projected_coarse.tif&quot;))
+# Threshold of the minimum training presence
+thr &lt;- min(values(p), na.rm=T)
+p[p&lt;thr] &lt;- NA
+p.pts &lt;- rasterToPoints(p)
+eooSDM &lt;- mcp(p.pts[,1:2])</code></pre>
+<pre><code>## WARNING: this minimum convex polygon has no coordinate reference system.</code></pre>
+<pre class="r"><code>aeoosdm &lt;- area(eooSDM)/1000000
+paste0(aeoosdm, &quot; meters ^2&quot;)</code></pre>
+<pre><code>## [1] &quot;306002.704624902 meters ^2&quot;</code></pre>
+</div>
+</div>
+<div id="aoo" class="section level1">
+<h1>AOO</h1>
+<p>Within the calculated EOO area above, users can calculate the sum of
+2x2 km grid cells to calculate the upper bounds of IUCN’s area of
+occupancy or AOO. AOO is intended to account for unsuitable or
+unoccupied habitats that may be included in the EOO calculations. AOO
+should be calculated with a standard grid cell size of 2 km (a cell area
+of 4 km2) in order to ensure consistency and comparability of results in
+IUCN assessments. In changeRanger, users can calculate AOO either 1)
+with occurrence points, 2) from the pre-masked thresholded SDM, and 3)
+from the masked thresholded SDM. It is suggested that users reproject
+ranges to an equal area projection for more accurate area-based
+calculations.</p>
+<p>Calculating the areas of occupancy measured in grid cells where the
+resolution is 2km</p>
+<div id="aoo-occurrence-points" class="section level2">
+<h2>AOO occurrence points</h2>
+<p>Calculate the area of occupancy that contains occurrence records</p>
+<pre class="r"><code>p &lt;- raster(paste0(system.file(package=&quot;changeRangeR&quot;), &quot;/extdata/DemoData/SDM/Climatically_suitable_projected_coarse.tif&quot;))
+# Using unfiltered records
+locs &lt;- read.csv(paste0(system.file(package=&quot;changeRangeR&quot;), &quot;/extdata/DemoData/locs/All_localities_30n.csv&quot;))
+locs &lt;- locs[,1:2]
+p[!is.na(p)] &lt;- 1
+AOOlocs &lt;- AOOarea(r = p, locs = locs)
+
+print(AOOlocs)</code></pre>
+<pre><code>## $area
+##             Metric km2
+## 1 AOO with records 120
+## 
+## $aooRaster
+## class      : RasterLayer 
+## dimensions : 728, 318, 231504  (nrow, ncol, ncell)
+## resolution : 0.01666667, 0.01666667  (x, y)
+## extent     : -79.87219, -74.57219, -3.986526, 8.14681  (xmin, xmax, ymin, ymax)
+## crs        : +proj=longlat +ellps=WGS84 +towgs84=0,0,0,0,0,0,0 +no_defs 
+## source     : memory
+## names      : Climatically_suitable_projected_coarse 
+## values     : 1, 1  (min, max)
+## 
+## 
+## $aooPixels
+## class      : RasterLayer 
+## dimensions : 728, 318, 231504  (nrow, ncol, ncell)
+## resolution : 0.01666667, 0.01666667  (x, y)
+## extent     : -79.87219, -74.57219, -3.986526, 8.14681  (xmin, xmax, ymin, ymax)
+## crs        : +proj=longlat +ellps=WGS84 +towgs84=0,0,0,0,0,0,0 +no_defs 
+## source     : memory
+## names      : layer 
+## values     : 1, 30  (min, max)</code></pre>
+</div>
+<div id="aoo-pre-masked-sdm" class="section level2">
+<h2>AOO pre-masked SDM</h2>
+<pre class="r"><code>p &lt;- raster(paste0(system.file(package=&quot;changeRangeR&quot;), &quot;/extdata/DemoData/SDM/Climatically_suitable_projected_coarse.tif&quot;))
+# Convert to binary
+p[!is.na(p)] &lt;- 1
+AOO &lt;- AOOarea(r = p)
+print(AOO)</code></pre>
+<pre><code>## $area
+##   Metric    km2
+## 1    AOO 106916
+## 
+## $aooRaster
+## class      : RasterLayer 
+## dimensions : 574, 248, 142352  (nrow, ncol, ncell)
+## resolution : 2315.769, 2315.769  (x, y)
+## extent     : -31701.99, 542608.8, 9565472, 10894724  (xmin, xmax, ymin, ymax)
+## crs        : +proj=utm +zone=18 +south +datum=WGS84 +units=m +no_defs 
+## source     : memory
+## names      : Climatically_suitable_projected_coarse 
+## values     : 1, 1  (min, max)
+## 
+## 
+## $aooPixels
+## NULL</code></pre>
+</div>
+<div id="aoo-masked-sdm" class="section level2">
+<h2>AOO masked SDM</h2>
+<pre class="r"><code>p &lt;- raster(paste0(system.file(package=&quot;changeRangeR&quot;), &quot;/extdata/DemoData/SDM/Forest_suitable_projected_coarse.tif&quot;))
+# Convert to binary
+p[!is.na(p)] &lt;- 1
+AOO &lt;- AOOarea(r = p)
+print(AOO)</code></pre>
+<pre><code>## $area
+##   Metric   km2
+## 1    AOO 86876
+## 
+## $aooRaster
+## class      : RasterLayer 
+## dimensions : 574, 248, 142352  (nrow, ncol, ncell)
+## resolution : 2315.769, 2315.769  (x, y)
+## extent     : -31701.99, 542608.8, 9565472, 10894724  (xmin, xmax, ymin, ymax)
+## crs        : +proj=utm +zone=18 +south +datum=WGS84 +units=m +no_defs 
+## source     : memory
+## names      : Forest_suitable_projected_coarse 
+## values     : 1, 1  (min, max)
+## 
+## 
+## $aooPixels
+## NULL</code></pre>
+</div>
+</div>
+<div id="optimized-model-threshold" class="section level1">
+<h1>Optimized Model Threshold</h1>
+<p>Choice of model threshold can have downstream implications for
+calculations of metrics such as IUCN’s EOO and AOO, when calculated
+using SDM inputs. changeRanger includes a function for users to choose
+model threshold</p>
+<p>Determining the best threshold and area for the SDM. For each
+increment of 0.01 between a user-specified threshold and the maximum SDM
+prediction value, the prediction is thresholded to this value to make a
+binary raster. This raster is then converted to points, which are used
+to delineate a trial MCP. Each trial MCP is spatially intersected with
+the original MCP (based on the occurrence coordinates) and the original
+occurrence points. The Jaccard similarity index is calculated to
+determine geographic similarity between the trial and observed MCP. The
+trial MCP is also spatially intersected with the original occurrence
+points to determine how many were omitted. The “best” MCP is the one
+that has the highest JSI and also omits the least original occurrence
+points.</p>
+<pre class="r"><code>p &lt;- raster(paste0(system.file(package=&quot;changeRangeR&quot;), &quot;/extdata/DemoData/SDM/olinguitoSDM_coarse.tif&quot;))
+xy &lt;- read.csv(paste0(system.file(package=&quot;changeRangeR&quot;), &quot;/extdata/DemoData/locs/10KM_thin_2017.csv&quot;))
+ch.orig &lt;- mcp(xy[,1:2])</code></pre>
+<pre><code>## WARNING: this minimum convex polygon has no coordinate reference system.</code></pre>
+<pre class="r"><code>thr &lt;- 0.3380209
+sf_use_s2(FALSE)</code></pre>
+<pre><code>## Spherical geometry (s2) switched off</code></pre>
+<pre class="r"><code>SDMeoo &lt;- mcpSDM(p = p, xy = xy[,1:2], ch.orig = ch.orig, thr = thr)</code></pre>
+<pre><code>## although coordinates are longitude/latitude, st_intersection assumes that they
+## are planar</code></pre>
+<pre><code>## although coordinates are longitude/latitude, st_intersection assumes that they
+## are planar
+## although coordinates are longitude/latitude, st_intersection assumes that they
+## are planar
+## although coordinates are longitude/latitude, st_intersection assumes that they
+## are planar
+## although coordinates are longitude/latitude, st_intersection assumes that they
+## are planar
+## although coordinates are longitude/latitude, st_intersection assumes that they
+## are planar
+## although coordinates are longitude/latitude, st_intersection assumes that they
+## are planar
+## although coordinates are longitude/latitude, st_intersection assumes that they
+## are planar
+## although coordinates are longitude/latitude, st_intersection assumes that they
+## are planar
+## although coordinates are longitude/latitude, st_intersection assumes that they
+## are planar
+## although coordinates are longitude/latitude, st_intersection assumes that they
+## are planar
+## although coordinates are longitude/latitude, st_intersection assumes that they
+## are planar
+## although coordinates are longitude/latitude, st_intersection assumes that they
+## are planar
+## although coordinates are longitude/latitude, st_intersection assumes that they
+## are planar
+## although coordinates are longitude/latitude, st_intersection assumes that they
+## are planar
+## although coordinates are longitude/latitude, st_intersection assumes that they
+## are planar
+## although coordinates are longitude/latitude, st_intersection assumes that they
+## are planar
+## although coordinates are longitude/latitude, st_intersection assumes that they
+## are planar
+## although coordinates are longitude/latitude, st_intersection assumes that they
+## are planar
+## although coordinates are longitude/latitude, st_intersection assumes that they
+## are planar
+## although coordinates are longitude/latitude, st_intersection assumes that they
+## are planar
+## although coordinates are longitude/latitude, st_intersection assumes that they
+## are planar
+## although coordinates are longitude/latitude, st_intersection assumes that they
+## are planar
+## although coordinates are longitude/latitude, st_intersection assumes that they
+## are planar
+## although coordinates are longitude/latitude, st_intersection assumes that they
+## are planar
+## although coordinates are longitude/latitude, st_intersection assumes that they
+## are planar
+## although coordinates are longitude/latitude, st_intersection assumes that they
+## are planar
+## although coordinates are longitude/latitude, st_intersection assumes that they
+## are planar
+## although coordinates are longitude/latitude, st_intersection assumes that they
+## are planar
+## although coordinates are longitude/latitude, st_intersection assumes that they
+## are planar
+## although coordinates are longitude/latitude, st_intersection assumes that they
+## are planar
+## although coordinates are longitude/latitude, st_intersection assumes that they
+## are planar
+## although coordinates are longitude/latitude, st_intersection assumes that they
+## are planar
+## although coordinates are longitude/latitude, st_intersection assumes that they
+## are planar
+## although coordinates are longitude/latitude, st_intersection assumes that they
+## are planar
+## although coordinates are longitude/latitude, st_intersection assumes that they
+## are planar
+## although coordinates are longitude/latitude, st_intersection assumes that they
+## are planar
+## although coordinates are longitude/latitude, st_intersection assumes that they
+## are planar
+## although coordinates are longitude/latitude, st_intersection assumes that they
+## are planar
+## although coordinates are longitude/latitude, st_intersection assumes that they
+## are planar
+## although coordinates are longitude/latitude, st_intersection assumes that they
+## are planar
+## although coordinates are longitude/latitude, st_intersection assumes that they
+## are planar
+## although coordinates are longitude/latitude, st_intersection assumes that they
+## are planar
+## although coordinates are longitude/latitude, st_intersection assumes that they
+## are planar
+## although coordinates are longitude/latitude, st_intersection assumes that they
+## are planar
+## although coordinates are longitude/latitude, st_intersection assumes that they
+## are planar
+## although coordinates are longitude/latitude, st_intersection assumes that they
+## are planar
+## although coordinates are longitude/latitude, st_intersection assumes that they
+## are planar
+## although coordinates are longitude/latitude, st_intersection assumes that they
+## are planar
+## although coordinates are longitude/latitude, st_intersection assumes that they
+## are planar
+## although coordinates are longitude/latitude, st_intersection assumes that they
+## are planar
+## although coordinates are longitude/latitude, st_intersection assumes that they
+## are planar
+## although coordinates are longitude/latitude, st_intersection assumes that they
+## are planar
+## although coordinates are longitude/latitude, st_intersection assumes that they
+## are planar
+## although coordinates are longitude/latitude, st_intersection assumes that they
+## are planar
+## although coordinates are longitude/latitude, st_intersection assumes that they
+## are planar
+## although coordinates are longitude/latitude, st_intersection assumes that they
+## are planar
+## although coordinates are longitude/latitude, st_intersection assumes that they
+## are planar</code></pre>
+<pre class="r"><code># Check the output
+SDMeoo</code></pre>
+<pre><code>## $jsi
+##  [1] 0.0520949123 0.0520999611 0.0523725493 0.0524454042 0.0526794692
+##  [6] 0.0563632017 0.0588234360 0.0588312191 0.0589303597 0.0589689001
+## [11] 0.0592527595 0.0593836749 0.0594161268 0.0598221225 0.0600188602
+## [16] 0.0601101614 0.0603700060 0.0603805727 0.0603805727 0.0609056693
+## [21] 0.0609251320 0.0612313249 0.0619024619 0.0620456869 0.0621879378
+## [26] 0.0621998926 0.0621998926 0.0628490252 0.0630336531 0.0633911471
+## [31] 0.0635252300 0.0635441324 0.0638238938 0.0639645525 0.0640185440
+## [36] 0.0644597243 0.0646646319 0.0647971887 0.0698927310 0.0700242843
+## [41] 0.0703382357 0.0707539347 0.0713006332 0.0717607409 0.0718935971
+## [46] 0.0725529982 0.0732138637 0.0732789739 0.0743536101 0.0751226010
+## [51] 0.0008306471 0.0008515118 0.0007272680 0.0015238333 0.0010513026
+## [56] 0.0009064591 0.0000000000 0.0000000000
+## 
+## $thr
+##  [1] 0.3380209 0.3480209 0.3580209 0.3680209 0.3780209 0.3880209 0.3980209
+##  [8] 0.4080209 0.4180209 0.4280209 0.4380209 0.4480209 0.4580209 0.4680209
+## [15] 0.4780209 0.4880209 0.4980209 0.5080209 0.5180209 0.5280209 0.5380209
+## [22] 0.5480209 0.5580209 0.5680209 0.5780209 0.5880209 0.5980209 0.6080209
+## [29] 0.6180209 0.6280209 0.6380209 0.6480209 0.6580209 0.6680209 0.6780209
+## [36] 0.6880209 0.6980209 0.7080209 0.7180209 0.7280209 0.7380209 0.7480209
+## [43] 0.7580209 0.7680209 0.7780209 0.7880209 0.7980209 0.8080209 0.8180209
+## [50] 0.8280209 0.8380209 0.8480209 0.8580209 0.8680209 0.8780209 0.8880209
+## [57] 0.8980209 0.9080209
+## 
+## $ov.pts
+##  [1] 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18
+## [26] 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18
+## [51]  1  1  1  1  1  1  0  0
+## 
+## $best.fit
+## class       : SpatialPolygons 
+## features    : 1 
+## extent      : -83.85417, -72.0625, -4.5625, 11.14583  (xmin, xmax, ymin, ymax)
+## crs         : +proj=longlat +datum=WGS84 +no_defs 
+## 
+## $best.fit.ind
+## [1] 50</code></pre>
+</div>
+<div id="ratio-overlap" class="section level1">
+<h1>Ratio overlap</h1>
+<p>The function ratioOverlap allows changeRangeR users to calculate the
+proportion overlap of a species’ range with other features, for example
+different land cover classes, habitat types, or ecoregions, different
+types of threats (any user-defined georeferenced polygon). In this
+example, we calculate the proportion of the Olinguito distribution that
+overlaps with protected areas in Colombia. NOTE: the protected areas can
+be separated by any fields’ categories in a shapefile’s attribute table.
+NOTE: When overlapping a species’s range with another raster they must
+be on the same reasolution before performing the overlap.</p>
+<div id="current" class="section level2">
+<h2>Current</h2>
+<pre class="r"><code>r &lt;- raster(paste0(system.file(package=&quot;changeRangeR&quot;), &quot;/extdata/DemoData/SDM/Forest_suitable_projected_coarse.tif&quot;))
+shp &lt;- readRDS(file.path(system.file(package=&quot;changeRangeR&quot;), &quot;extdata/DemoData/shapefiles&quot;, &quot;WDPA_COL_olinguito_simp.rds&quot;))
+# set the projections to match
+shp &lt;- spTransform(shp, CRSobj = crs(r))
+# View the fields
+colnames(shp@data)</code></pre>
+<pre><code>## [1] &quot;NAME&quot;       &quot;ORIG_NAME&quot;  &quot;DESIG&quot;      &quot;DESIG_ENG&quot;  &quot;DESIG_TYPE&quot;</code></pre>
+<pre class="r"><code># Pick the field you are interested in
+field &lt;- &quot;DESIG_ENG&quot;
+category &lt;- unique(shp$DESIG_ENG)
+ratio.Overlap &lt;- ratioOverlap(r = r, shp = shp, field = field, category = category, subfield = F)
+# Look at the range that is protected
+plot(ratio.Overlap$maskedRange[[1]])</code></pre>
+<p><img src="index_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<pre class="r"><code># The proportion of the range that is protected
+ratio.Overlap$ratio</code></pre>
+<pre><code>## [1] &quot;Percentage of range within Specially Protected Area (Cartagena Convention), World Heritage Site (natural or mixed), Integrated Management Regional Districts, Regional Natural Parks, National Natural Park, Regional Protective Forest Reserves, Civil Society Nature Reserve, National Protective Forest Reserves, Soil Conservation Districts, Fauna and Flora Sanctuary, Integrated Management National Districts, Fauna Sanctuary, Recreation Area, Flora Sanctuary is 11.523%&quot;</code></pre>
+</div>
+<div id="future" class="section level2">
+<h2>Future</h2>
+<p>For users that have information on past environmental conditions or
+future scenarios, they can calculate changes in metrics over time and
+view a line graph of those changes. For example, the change in
+percentage of forest within species’ range over time.</p>
+<pre class="r"><code># Load shapefile
+PA &lt;- readRDS(file.path(system.file(package=&quot;changeRangeR&quot;), &quot;extdata/DemoData/shapefiles/vn&quot;, &quot;VN_NRs_simp.rds&quot;))
+# load raster
+r &lt;- stack(list.files(path = paste0(system.file(package=&quot;changeRangeR&quot;), &quot;/extdata/DemoData/SDM/franLang&quot;), pattern = &quot;\\.tif$&quot;, full.names = T))
+# Assume PA&#39;s will not change, so make list of current protectes areas
+futures &lt;- list(PA, PA)
+# create list of rasters for example
+r &lt;- raster::unstack(r)
+# supply names for r and futures
+r.names &lt;- c(&quot;BCC.2040.ssp2&quot;, &quot;BCC.2060.ssp2&quot;)
+futures.names &lt;- c(&quot;PA1&quot;, &quot;PA2&quot;)
+# Define shapefile field and category
+field &lt;- &quot;DESIG_ENG&quot;
+category &lt;- &quot;All&quot;
+# Calculate the overlap for each time period
+future.ratios &lt;- futureOverlap(r = r, futures = futures, field = field, category = category, futures.names = futures.names, r.names = r.names)
+## Plot
+# Create list of years from which landcover comes
+years &lt;- c(2040, 2060)
+# Plot
+plot(x = years, y = future.ratios[,2], type = &quot;b&quot;, main = &quot;Percent of SDM predicted to be protected&quot;)</code></pre>
+<p><img src="index_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+</div>
+<div id="environmental-change-through-time" class="section level2">
+<h2>Environmental Change Through Time</h2>
+<p>To see how SDM range size can change with suitable forest cover
+through time, supply environmental rasters and a suitability threshold
+as well as a binary SDM. The environmental rasters must be in the same
+coordinate reference system at the SDM.</p>
+<pre class="r"><code>binaryRange &lt;- raster::raster(paste0(system.file(package=&quot;changeRangeR&quot;), &quot;/extdata/DemoData/SDM/Climatically_suitable_projected_coarse.tif&quot;))
+rStack &lt;- raster::stack(list.files(path = paste0(system.file(package=&quot;changeRangeR&quot;), &quot;/extdata/DemoData/MODIS&quot;), pattern = &quot;\\.tif$&quot;, full.names = T))
+rStack &lt;- raster::projectRaster(rStack, binaryRange, method = &quot;bilinear&quot;)
+threshold &lt;- 50.086735
+
+SDM.time &lt;- envChange(rStack = rStack, binaryRange = binaryRange, threshold = threshold, bound = &quot;lower&quot;)
+
+years &lt;- c(&quot;2005&quot;, &quot;2006&quot;, &quot;2008&quot;, &quot;2009&quot;)
+
+SDM.time$Area</code></pre>
+<pre><code>##                                  Area
+## X2005_olinguito_Modis_coarse 49212417
+## X2006_olinguito_Modis_coarse 30135108
+## X2008_olinguito_Modis_coarse 12627891
+## X2009_olinguito_Modis_coarse 24672208</code></pre>
+<pre class="r"><code>plot(y = SDM.time$Area, x = years, main = &quot;SDM area change&quot;, ylab = &quot;area (square m)&quot;)
+lines(y = SDM.time$Area, x = years)</code></pre>
+<p><img src="index_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+</div>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

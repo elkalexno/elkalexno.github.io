@@ -1,0 +1,13 @@
+
+name: "single-species-site"
+output_dir: "."
+navbar:
+  title: "Single Species Metrics"
+  left:
+    - text: "Inicio"
+      href: index.html
+output:
+  html_document:
+    toc: true
+    toc_depth: 2
+    theme: cosmo
